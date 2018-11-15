@@ -16,6 +16,8 @@ public class Enemy : MonoBehaviour
     float turnSpeed;   //回転速度
     float step;
 
+    public bool bulletFlg;  //弾発射フラグ
+
     [SerializeField]
     int vector;        //移動方向( 0：停止　1：前　2：後　3：右　4：左 )
     int before;        //直前の向き
@@ -34,9 +36,11 @@ public class Enemy : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         position = rb.position;
         speed = 0.05f;
-        turnSpeed = 2.0f;
+        turnSpeed = 120.0f;
         vector = 1;
         rotVector = 0;
+
+        bulletFlg = true;
 
         endTime = Random.Range(1.0f, 6.0f);
         elapsedTime = 0.0f;
@@ -50,15 +54,16 @@ public class Enemy : MonoBehaviour
 
         //移動
         EnemyMove();
-
+        
         //方向転換
         if (elapsedTime >= endTime)
         {
             //EnemyVectorChenge();
             vector = 0;
+            bulletFlg = false;
             EnemyRotation();
-            endTime = Random.Range(1.0f, 6.0f);
-            elapsedTime = 0.0f;
+            //endTime = Random.Range(1.0f, 6.0f);
+            //elapsedTime = 0.0f;
         }
         	
 	}
@@ -102,18 +107,18 @@ public class Enemy : MonoBehaviour
     {
         if(vector == 0)
         {
-            rotVector = 2;
+            step = turnSpeed * Time.deltaTime;
+            rb.MoveRotation(Quaternion.RotateTowards(rb.rotation, Quaternion.Euler(0, 0, 0), step));
 
-            switch(rotVector)
+            if(rb.rotation.y == 0.0f)
             {
-                case 2:
-                    step = turnSpeed * Time.deltaTime;
-                    rb.MoveRotation(Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, 0, 0), step));
-                    if (rb.rotation.y == 0.0f) vector = rotVector;
-                    break;
+                endTime = Random.Range(1.0f, 6.0f);
+                elapsedTime = 0.0f;
+
+                vector = 2;
+                bulletFlg = true;
             }
 
-                        
         }
     }
 
