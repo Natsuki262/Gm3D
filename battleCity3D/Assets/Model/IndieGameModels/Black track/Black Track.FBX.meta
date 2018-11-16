@@ -1,12 +1,39 @@
 fileFormatVersion: 2
 guid: e2a9c897a0fdbf9429781e4ee9bbefe5
 ModelImporter:
-  serializedVersion: 22
+  serializedVersion: 23
   fileIDToRecycleName:
+    100000: //RootNode
+    100002: body
+    100004: Object02
+    100006: right track
+    100008: turret
+    400000: //RootNode
+    400002: body
+    400004: Object02
+    400006: right track
+    400008: turret
+    2300000: body
+    2300002: right track
+    2300004: turret
+    3300000: body
+    3300002: right track
+    3300004: turret
     4300000: right track
     4300002: body
     4300004: turret
-  externalObjects: {}
+    11100000: //RootNode
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Black Track
+    second: {fileID: 2100000, guid: 3976c9c55074ae841ac14f29e4015404, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Track
+    second: {fileID: 2100000, guid: af7ec15e75f88e84c84fe5d350c48ff1, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
@@ -57,6 +84,8 @@ ModelImporter:
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
     useFileScale: 0
+    previousCalculatedGlobalScale: 1
+    hasPreviousCalculatedGlobalScale: 0
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
@@ -76,7 +105,6 @@ ModelImporter:
     legStretch: 0.05
     feetSpacing: 0
     rootMotionBoneName: 
-    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1
