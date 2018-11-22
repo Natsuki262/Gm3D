@@ -18,7 +18,7 @@ public class BulletShot : MonoBehaviour
     // Use this for initialization
     void Start ()
     {
-        endTime = 1.5f;
+        endTime = 2.5f;
 
         enemyScript = tank.GetComponent<Enemy>();
     }

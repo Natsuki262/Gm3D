@@ -13,6 +13,9 @@ public class Enemy : MonoBehaviour
     const int LEFT  = 3;
     const int RIGHT = 4;
 
+    const float MAX = 8.5f;
+    const float MIN = -8.5f;
+
 
     public GameObject symbol;  //シンボル(プレイヤー側の基地)
     Vector3 symbolPos;         //シンボルの位置
@@ -47,13 +50,13 @@ public class Enemy : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         position = rb.position;
         speed = 0.05f;
-        turnSpeed = 120.0f;
+        turnSpeed = 60.0f;
         vector = 1;
         rotVector = 0;
 
         bulletFlg = true;
 
-        endTime = Random.Range(1.0f, 6.0f);
+        endTime = Random.Range(1.0f, 5.0f);
         elapsedTime = 0.0f;
 	}
 	
@@ -66,15 +69,28 @@ public class Enemy : MonoBehaviour
         //移動
         EnemyMove();
 
+        //移動中は壁を表示
+        if(vector != 0)
+        {
+            wall.SetActive(true);
+        }
+        //回転中は壁を非表示(ダミーを出す)
+        else if(vector == 0)
+        {
+            wall.SetActive(false);
+        }
+        
+        //弾発射の停止
+        if(elapsedTime >= (endTime - 1.0f))
+        {
+            bulletFlg = false;
+        }
         //方向転換
         if (elapsedTime >= endTime)
         {
-            vector = 0;
-            bulletFlg = false;
             EnemyVectorChenge();
             EnemyRotation();
-        }
-        	
+        }        	
 	}
 
     //----------------------------
@@ -104,8 +120,8 @@ public class Enemy : MonoBehaviour
                 rb.rotation = Quaternion.AngleAxis(90.0f, Vector3.up);
                 break;
         }
-       
-        rb.position = position;  //更新
+
+        rb.position = new Vector3(Mathf.Clamp(position.x, MIN, MAX), 0, Mathf.Clamp(position.z, MIN, MAX));
     }
 
 
@@ -114,14 +130,88 @@ public class Enemy : MonoBehaviour
     //---------------------------------
     void EnemyVectorChenge()
     {
-        wall.SetActive(false);
+        int select;
 
-        if(rotVector == 0)
+        before = vector;
+        vector = 0;
+
+        if (rotVector == 0)
         {
             //基本的にシンボルを目指す様に動かす
             vectorSelect = Random.Range(0, 100);
+
+            //壁際にいる場合は直前と同じ方向を向かない
+            if (rb.position.x == MAX || rb.position.x == MIN
+            || rb.position.z == MAX || rb.position.z == MIN)
+            {
+                do
+                {
+                    rotVector = Random.Range(1, 5);
+
+                } while (rotVector == before);
+            }
+            //左上端時
+            else if(rb.position.x == MIN && rb.position.z == MAX)
+            {
+                select = Random.Range(0, 2);
+
+                switch(select)
+                {
+                    case 0:
+                        rotVector = DOWN;
+                        break;
+                    case 1:
+                        rotVector = RIGHT;
+                        break;
+                }
+            }
+            //右上端時
+            else if (rb.position.x == MAX && rb.position.z == MAX)
+            {
+                select = Random.Range(0, 2);
+
+                switch (select)
+                {
+                    case 0:
+                        rotVector = DOWN;
+                        break;
+                    case 1:
+                        rotVector = LEFT;
+                        break;
+                }
+            }
+            //左下端時
+            else if (rb.position.x == MIN && rb.position.z == MIN)
+            {
+                select = Random.Range(0, 2);
+
+                switch (select)
+                {
+                    case 0:
+                        rotVector = UP;
+                        break;
+                    case 1:
+                        rotVector = RIGHT;
+                        break;
+                }
+            }
+            //右下端時
+            else if (rb.position.x == MAX && rb.position.z == MIN)
+            {
+                select = Random.Range(0, 2);
+
+                switch (select)
+                {
+                    case 0:
+                        rotVector = UP;
+                        break;
+                    case 1:
+                        rotVector = LEFT;
+                        break;
+                }
+            }
             //敵戦車がシンボルより左側にいる場合
-            if (rb.position.x < symbolPos.x)
+            else if (rb.position.x < symbolPos.x)
             {
                 if (vectorSelect >= 0 && vectorSelect <= 40)
                 {
@@ -204,29 +294,22 @@ public class Enemy : MonoBehaviour
         rotVector = 0;
         bulletFlg = true;
 
-        wall.SetActive(true);
+        //wall.SetActive(true);
 
-        endTime = Random.Range(1.0f, 6.0f);
+        endTime = Random.Range(1.0f, 5.0f);
         elapsedTime = 0.0f;
     }
 
     //------------------------
     // 衝突判定
     //------------------------
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.tag == "Wall" || other.gameObject.tag == "Enemy")
+        if (other.gameObject.tag == "Wall")
         {
-            //同じ向きを取らないようにする
-            do
-            {
-                before = vector;
-                vector = Random.Range(1, 5);
-
-            } while (before == vector);
-
-            
+            elapsedTime = endTime;
         }
     }
-    
+
+
 }
