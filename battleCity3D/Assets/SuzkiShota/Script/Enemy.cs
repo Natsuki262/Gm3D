@@ -8,39 +8,33 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     //定数
-    const int DOWN  = 1;
-    const int UP    = 2;
-    const int LEFT  = 3;
-    const int RIGHT = 4;
+    const int DOWN  = 1;  //後
+    const int UP    = 2;  //前
+    const int LEFT  = 3;  //左
+    const int RIGHT = 4;  //右
 
-    const float MAX = 8.5f;
-    const float MIN = -8.5f;
+    const float MAX = 8.5f;   //最大座標値
+    const float MIN = -8.5f;  //最小座標値
 
-
-    public GameObject symbol;  //シンボル(プレイヤー側の基地)
-    Vector3 symbolPos;         //シンボルの位置
-
-    public GameObject wall;
+    [SerializeField]GameObject symbol;  //シンボル(プレイヤー側の基地)
+    Vector3 symbolPos;                  //シンボルの位置
 
     Rigidbody rb;      //Rigidbody取得用
     Vector3 position;  //位置
     float speed;       //移動速度
-    float turnSpeed;   //回転速度
-    float step;
+    float turnSpeed;   //回転速度計算用
+    float step;        //回転速度
 
-    public bool bulletFlg;  //弾発射フラグ
+    public bool bulletFlg;   //弾発射フラグ
+    [SerializeField]bool wallHitFlg;  //壁衝突フラグ
 
-    [SerializeField]
-    int vector;        //移動方向( 0：停止　1：前　2：後　3：右　4：左 )
-    int before;        //直前の向き
-    int beforeR;
-    [SerializeField]
-    int rotVector;     //回転用方向
-    int vectorSelect;  //方向転換時の確立操作用変数
+    [SerializeField]int vector;     //移動方向( 0：停止　1：前　2：後　3：右　4：左 )
+    int before;                     //直前の向き
+    [SerializeField]int rotVector;  //回転用方向
+    int vectorSelect;               //方向転換時の確立操作用変数
 
-    [SerializeField]
-    float endTime;     //カウント終了時間
-    float elapsedTime; //カウント経過時間
+    [SerializeField]float endTime; //カウント終了時間
+    float elapsedTime;             //カウント経過時間
 
 	// Use this for initialization
 	void Start ()
@@ -55,6 +49,7 @@ public class Enemy : MonoBehaviour
         rotVector = 0;
 
         bulletFlg = true;
+        wallHitFlg = false;
 
         endTime = Random.Range(1.0f, 5.0f);
         elapsedTime = 0.0f;
@@ -68,17 +63,6 @@ public class Enemy : MonoBehaviour
 
         //移動
         EnemyMove();
-
-        //移動中は壁を表示
-        if(vector != 0)
-        {
-            wall.SetActive(true);
-        }
-        //回転中は壁を非表示(ダミーを出す)
-        else if(vector == 0)
-        {
-            wall.SetActive(false);
-        }
         
         //弾発射の停止
         if(elapsedTime >= (endTime - 1.0f))
@@ -90,7 +74,8 @@ public class Enemy : MonoBehaviour
         {
             EnemyVectorChenge();
             EnemyRotation();
-        }        	
+        } 
+           	
 	}
 
     //----------------------------
@@ -130,8 +115,6 @@ public class Enemy : MonoBehaviour
     //---------------------------------
     void EnemyVectorChenge()
     {
-        int select;
-
         before = vector;
         vector = 0;
 
@@ -141,77 +124,9 @@ public class Enemy : MonoBehaviour
             vectorSelect = Random.Range(0, 100);
 
             //壁際にいる場合は直前と同じ方向を向かない
-            if (rb.position.x == MAX || rb.position.x == MIN
-            || rb.position.z == MAX || rb.position.z == MIN)
-            {
-                do
-                {
-                    rotVector = Random.Range(1, 5);
-
-                } while (rotVector == before);
-            }
-            //左上端時
-            else if(rb.position.x == MIN && rb.position.z == MAX)
-            {
-                select = Random.Range(0, 2);
-
-                switch(select)
-                {
-                    case 0:
-                        rotVector = DOWN;
-                        break;
-                    case 1:
-                        rotVector = RIGHT;
-                        break;
-                }
-            }
-            //右上端時
-            else if (rb.position.x == MAX && rb.position.z == MAX)
-            {
-                select = Random.Range(0, 2);
-
-                switch (select)
-                {
-                    case 0:
-                        rotVector = DOWN;
-                        break;
-                    case 1:
-                        rotVector = LEFT;
-                        break;
-                }
-            }
-            //左下端時
-            else if (rb.position.x == MIN && rb.position.z == MIN)
-            {
-                select = Random.Range(0, 2);
-
-                switch (select)
-                {
-                    case 0:
-                        rotVector = UP;
-                        break;
-                    case 1:
-                        rotVector = RIGHT;
-                        break;
-                }
-            }
-            //右下端時
-            else if (rb.position.x == MAX && rb.position.z == MIN)
-            {
-                select = Random.Range(0, 2);
-
-                switch (select)
-                {
-                    case 0:
-                        rotVector = UP;
-                        break;
-                    case 1:
-                        rotVector = LEFT;
-                        break;
-                }
-            }
+            
             //敵戦車がシンボルより左側にいる場合
-            else if (rb.position.x < symbolPos.x)
+            if (rb.position.x < symbolPos.x)
             {
                 if (vectorSelect >= 0 && vectorSelect <= 40)
                 {
@@ -294,8 +209,6 @@ public class Enemy : MonoBehaviour
         rotVector = 0;
         bulletFlg = true;
 
-        //wall.SetActive(true);
-
         endTime = Random.Range(1.0f, 5.0f);
         elapsedTime = 0.0f;
     }
@@ -307,8 +220,32 @@ public class Enemy : MonoBehaviour
     {
         if (other.gameObject.tag == "Wall")
         {
-            elapsedTime = endTime;
+            if(wallHitFlg == false)
+            {
+                wallHitFlg = true;
+                elapsedTime = endTime;
+            }
         }
+        if (other.gameObject.tag == "Enemy")
+        {
+            if(vector % 2 != 0)
+            {
+                vector++;
+            }
+            else if(vector % 2 == 0)
+            {
+                vector--;
+            }
+        }
+
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.tag == "Wall")
+        {
+            if(wallHitFlg == true) wallHitFlg = false;
+        }
+        
     }
 
 

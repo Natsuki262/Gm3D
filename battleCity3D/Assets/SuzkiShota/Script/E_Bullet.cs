@@ -14,7 +14,7 @@ public class E_Bullet : MonoBehaviour
 	void Start ()
     {
         rb = GetComponent<Rigidbody>();
-        speed = 6f;
+        speed = 4.5f;
         
 	}
 	
