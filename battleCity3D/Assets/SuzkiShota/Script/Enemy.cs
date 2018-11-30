@@ -26,7 +26,7 @@ public class Enemy : MonoBehaviour
     float step;        //回転速度
 
     public bool bulletFlg;   //弾発射フラグ
-    [SerializeField]bool wallHitFlg;  //壁衝突フラグ
+    [SerializeField]bool hitFlg;  //衝突フラグ
 
     [SerializeField]int vector;     //移動方向( 0：停止　1：前　2：後　3：右　4：左 )
     int before;                     //直前の向き
@@ -49,8 +49,8 @@ public class Enemy : MonoBehaviour
         rotVector = 0;
 
         bulletFlg = true;
-        wallHitFlg = false;
-
+        hitFlg = false;
+        
         endTime = Random.Range(1.0f, 5.0f);
         elapsedTime = 0.0f;
 	}
@@ -124,52 +124,63 @@ public class Enemy : MonoBehaviour
             vectorSelect = Random.Range(0, 100);
 
             //壁際にいる場合は直前と同じ方向を向かない
+            if(hitFlg == true)
+            {
+                do
+                {
+                    rotVector = Random.Range(1, 5);
+                }
+                while (before == rotVector);
+            }
+            else if(hitFlg == false)
+            {
+                //敵戦車がシンボルより左側にいる場合
+                if (rb.position.x < symbolPos.x)
+                {
+                    if (vectorSelect >= 0 && vectorSelect <= 35)
+                    {
+                        rotVector = DOWN;
+                    }
+                    else if (vectorSelect > 35 && vectorSelect <= 60)
+                    {
+                        rotVector = UP;
+                    }
+                    else if (vectorSelect > 60 && vectorSelect <= 70)
+                    {
+                        rotVector = LEFT;
+                    }
+                    else if (vectorSelect > 70 && vectorSelect < 100)
+                    {
+                        rotVector = RIGHT;
+                    }
+                }
+                //敵戦車がシンボルより右側にいる場合
+                else if (rb.position.x > symbolPos.x)
+                {
+                    if (vectorSelect >= 0 && vectorSelect <= 35)
+                    {
+                        rotVector = DOWN;
+                    }
+                    else if (vectorSelect > 35 && vectorSelect <= 60)
+                    {
+                        rotVector = UP;
+                    }
+                    else if (vectorSelect > 60 && vectorSelect <= 90)
+                    {
+                        rotVector = LEFT;
+                    }
+                    else if (vectorSelect > 90 && vectorSelect < 100)
+                    {
+                        rotVector = RIGHT;
+                    }
+                }
+                //敵戦車とシンボルのｘ軸が同じの場合
+                else if (rb.position.x == symbolPos.x)
+                {
+                    rotVector = Random.Range(1, 5);
+                }
+            }
             
-            //敵戦車がシンボルより左側にいる場合
-            if (rb.position.x < symbolPos.x)
-            {
-                if (vectorSelect >= 0 && vectorSelect <= 40)
-                {
-                    rotVector = DOWN;
-                }
-                else if (vectorSelect > 40 && vectorSelect <= 60)
-                {
-                    rotVector = UP;
-                }
-                else if (vectorSelect > 60 && vectorSelect <= 75)
-                {
-                    rotVector = LEFT;
-                }
-                else if (vectorSelect > 75 && vectorSelect < 100)
-                {
-                    rotVector = RIGHT;
-                }
-            }
-            //敵戦車がシンボルより右側にいる場合
-            else if (rb.position.x > symbolPos.x)
-            {
-                if (vectorSelect >= 0 && vectorSelect <= 40)
-                {
-                    rotVector = DOWN;
-                }
-                else if (vectorSelect > 40 && vectorSelect <= 60)
-                {
-                    rotVector = UP;
-                }
-                else if (vectorSelect > 60 && vectorSelect <= 85)
-                {
-                    rotVector = LEFT;
-                }
-                else if (vectorSelect > 85 && vectorSelect < 100)
-                {
-                    rotVector = RIGHT;
-                }
-            }
-            //敵戦車とシンボルのｘ軸が同じの場合
-            else if (rb.position.x == symbolPos.x)
-            {
-                rotVector = Random.Range(1, 5);
-            }
         }
 
     }
@@ -208,7 +219,7 @@ public class Enemy : MonoBehaviour
         vector = rotVector;
         rotVector = 0;
         bulletFlg = true;
-
+        
         endTime = Random.Range(1.0f, 5.0f);
         elapsedTime = 0.0f;
     }
@@ -216,34 +227,31 @@ public class Enemy : MonoBehaviour
     //------------------------
     // 衝突判定
     //------------------------
-    private void OnTriggerStay(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Wall")
+        //壁または敵戦車同士が当たったら方向転換
+        if (other.gameObject.tag == "Wall" || other.gameObject.tag == "Enemy")
         {
-            if(wallHitFlg == false)
+            if (hitFlg == false)
             {
-                wallHitFlg = true;
+                hitFlg = true;
                 elapsedTime = endTime;
             }
         }
-        if (other.gameObject.tag == "Enemy")
+        //プレイヤーの弾に当たった時、自身を消去する
+        /*else if (other.gameObject.tag == "プレイヤーの弾")
         {
-            if(vector % 2 != 0)
-            {
-                vector++;
-            }
-            else if(vector % 2 == 0)
-            {
-                vector--;
-            }
-        }
-
+            Destroy(gameObject);
+        }*/        
     }
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.tag == "Wall")
+        if (other.gameObject.tag == "Wall" || other.gameObject.tag == "Enemy")
         {
-            if(wallHitFlg == true) wallHitFlg = false;
+            if (hitFlg == true)
+            {
+                hitFlg = false;
+            }
         }
         
     }
