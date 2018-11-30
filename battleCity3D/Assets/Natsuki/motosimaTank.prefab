@@ -72,7 +72,7 @@ GameObject:
   - component: {fileID: 4563916439211842}
   - component: {fileID: 54761518901051176}
   m_Layer: 0
-  m_Name: EnemyTank
+  m_Name: motosimaTank
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
