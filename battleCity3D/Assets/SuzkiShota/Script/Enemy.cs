@@ -13,8 +13,10 @@ public class Enemy : MonoBehaviour
     const int LEFT  = 3;  //左
     const int RIGHT = 4;  //右
 
-    const float MAX = 8.5f;   //最大座標値
-    const float MIN = -8.5f;  //最小座標値
+    const float MAX = 45.0f;   //最大座標値
+    const float MIN = -45.0f;  //最小座標値
+
+    [SerializeField]GameObject emManager;  //EnemyManager
 
     [SerializeField]GameObject symbol;  //シンボル(プレイヤー側の基地)
     Vector3 symbolPos;                  //シンボルの位置
@@ -39,11 +41,13 @@ public class Enemy : MonoBehaviour
 	// Use this for initialization
 	void Start ()
     {
+        emManager = GameObject.Find("EnemyManager");
+
         symbolPos = symbol.transform.position;
 
         rb = GetComponent<Rigidbody>();
         position = rb.position;
-        speed = 0.05f;
+        speed = 0.1f;
         turnSpeed = 60.0f;
         vector = 1;
         rotVector = 0;
@@ -51,7 +55,7 @@ public class Enemy : MonoBehaviour
         bulletFlg = true;
         hitFlg = false;
         
-        endTime = Random.Range(1.0f, 5.0f);
+        endTime = Random.Range(5.0f, 15.0f);
         elapsedTime = 0.0f;
 	}
 	
@@ -220,7 +224,7 @@ public class Enemy : MonoBehaviour
         rotVector = 0;
         bulletFlg = true;
         
-        endTime = Random.Range(1.0f, 5.0f);
+        endTime = Random.Range(5.0f, 15.0f);
         elapsedTime = 0.0f;
     }
 
@@ -230,7 +234,7 @@ public class Enemy : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         //壁または敵戦車同士が当たったら方向転換
-        if (other.gameObject.tag == "Wall" || other.gameObject.tag == "Enemy")
+        if (other.gameObject.tag == "box" || other.gameObject.tag == "Enemy")
         {
             if (hitFlg == false)
             {
@@ -238,15 +242,22 @@ public class Enemy : MonoBehaviour
                 elapsedTime = endTime;
             }
         }
-        //プレイヤーの弾に当たった時、自身を消去する
-        /*else if (other.gameObject.tag == "プレイヤーの弾")
-        {
-            Destroy(gameObject);
-        }*/        
+        
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        //プレイヤーの弾に当たった時、自身を消去する
+        if (collision.gameObject.tag == "P_Bullet")
+        {
+            emManager.GetComponent<EnemyManager>().nowEntry--;
+            Destroy(gameObject);
+        }
+    }
+
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.tag == "Wall" || other.gameObject.tag == "Enemy")
+        if (other.gameObject.tag == "box" || other.gameObject.tag == "Enemy")
         {
             if (hitFlg == true)
             {
@@ -255,6 +266,5 @@ public class Enemy : MonoBehaviour
         }
         
     }
-
 
 }

@@ -14,14 +14,15 @@ public class E_Bullet : MonoBehaviour
 	void Start ()
     {
         rb = GetComponent<Rigidbody>();
-        speed = 4.5f;
+        speed = 0.8f;
         
 	}
 	
 	// Update is called once per frame
 	void Update ()
     {
-        rb.AddForce(transform.forward * speed);
+        //rb.AddForce(transform.forward * speed);
+        rb.position += transform.forward * speed;
 	}
 
 
@@ -30,7 +31,7 @@ public class E_Bullet : MonoBehaviour
     //-------------------------
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.tag == "Wall")
+        if(other.gameObject.tag == "box")
         {
             Destroy(gameObject);
         }

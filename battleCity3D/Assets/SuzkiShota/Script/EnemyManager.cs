@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 public class EnemyManager : MonoBehaviour
 {
-    const int MAX_ENEMY = 5;       //フィールド上に出現する敵の最大数
+    const int MAX_ENEMY = 10;       //フィールド上に出現する敵の最大数
     const float NEXT_TIME = 3.0f;  //敵の出現時間間隔
 
     [SerializeField]
@@ -17,8 +17,8 @@ public class EnemyManager : MonoBehaviour
     [SerializeField]
     GameObject[] entryEnemy;  //出現する敵
 
-    int posSelect;  //出現位置選択用（左端から0番、1番・・・）
-    int nowEntry;   //現在出現している敵の数
+    int posSelect;         //出現位置選択用（左端から0番、1番・・・）
+    public int nowEntry;   //現在出現している敵の数
 
     [SerializeField]
     float elapsedTime;    //経過時間測定用変数

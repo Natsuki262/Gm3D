@@ -80,10 +80,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4433761187410650}
   - component: {fileID: 136409684282093658}
-  - component: {fileID: 114372279281265018}
+  - component: {fileID: 114664848629488454}
   m_Layer: 0
   m_Name: bulletSlow
-  m_TagString: Untagged
+  m_TagString: P_Bullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -609,7 +609,7 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1739519266368310}
   m_Mesh: {fileID: 4300000, guid: eb3b6ec25a444914ea4e8c1ef0fbcdee, type: 3}
---- !u!114 &114372279281265018
+--- !u!114 &114664848629488454
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -620,7 +620,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b47a865c8d323fa4fa5fed345b3360dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletSpeedSlow: 0.5
+  bulletSpeedSlow: 0.2
 --- !u!136 &136409684282093658
 CapsuleCollider:
   m_ObjectHideFlags: 1
