@@ -25,7 +25,7 @@ public class bulletSlow : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.name == "box")
+        if (collision.gameObject.tag == "box")
         {
             Destroy(gameObject);
             Debug.Log("Destor");
