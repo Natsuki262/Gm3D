@@ -46,4 +46,12 @@ public class PlayerMove : MonoBehaviour
         Quaternion turnRotation = Quaternion.Euler(0f, turn, 0f);
         rb.MoveRotation(rb.rotation * turnRotation);
     }
+    private void OnTriggerEnter(Collider collision)
+    {
+        if(collision.gameObject.tag=="E_Bullet")
+        {
+            Debug.Log("<color=red>EnemybulletHIT</color>");
+        }
+    }
+
 }
