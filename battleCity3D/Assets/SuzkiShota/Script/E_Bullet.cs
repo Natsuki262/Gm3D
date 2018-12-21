@@ -8,13 +8,15 @@ using UnityEngine;
 public class E_Bullet : MonoBehaviour
 {
     Rigidbody rb;  //Rigidbody取得用
+
+    [SerializeField]
     float speed;   //弾のスピード
 
 	// Use this for initialization
 	void Start ()
     {
         rb = GetComponent<Rigidbody>();
-        speed = 0.8f;
+        speed = 1.5f;
         
 	}
 	

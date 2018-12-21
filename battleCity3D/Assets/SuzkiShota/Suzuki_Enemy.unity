@@ -803,20 +803,6 @@ Prefab:
       propertyPath: symbol
       value: 
       objectReference: {fileID: 1641484185}
-    - target: {fileID: 65285444607028172, guid: 170b254d29b02c14aa20a81b373a8072,
-        type: 2}
-      propertyPath: m_Size.x
-      value: 1.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 65285444607028172, guid: 170b254d29b02c14aa20a81b373a8072,
-        type: 2}
-      propertyPath: m_Size.z
-      value: 1.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1059433236603594, guid: 170b254d29b02c14aa20a81b373a8072, type: 2}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 170b254d29b02c14aa20a81b373a8072, type: 2}
   m_IsPrefabAsset: 0
@@ -943,6 +929,7 @@ MonoBehaviour:
   - {fileID: 337161415}
   entryEnemy:
   - {fileID: 1059433236603594, guid: 170b254d29b02c14aa20a81b373a8072, type: 2}
+  nowEntry: 0
   elapsedTime: 0
 --- !u!4 &1655747764
 Transform:

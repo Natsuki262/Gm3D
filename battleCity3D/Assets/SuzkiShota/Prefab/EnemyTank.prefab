@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 114646457596562250}
   m_Layer: 0
   m_Name: ShotPosition
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -107,7 +107,7 @@ Transform:
   m_GameObject: {fileID: 1059433236603594}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0.4, z: 7}
-  m_LocalScale: {x: 3, y: 3, z: 3}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 4739531793827706}
   - {fileID: 4493667741516170}
@@ -183,7 +183,7 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: e330ef0a19faf434788f312ceeebaa77, type: 2}
+  - {fileID: 2100000, guid: 3026bd7e05cb19b409e8d5ea46322f47, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -218,7 +218,7 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 3026bd7e05cb19b409e8d5ea46322f47, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -253,7 +253,7 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 3026bd7e05cb19b409e8d5ea46322f47, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -319,7 +319,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.8, y: 1, z: 0.8}
+  m_Size: {x: 1.1, y: 1, z: 1.1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!65 &65952811623874370
 BoxCollider:
@@ -344,12 +344,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ded2609990e8a0241aa664c3221ca78f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  emManager: {fileID: 0}
   symbol: {fileID: 1440517625708332, guid: 9cfd60a72b10e8046a8b825f50b08c69, type: 2}
   bulletFlg: 0
   hitFlg: 0
   vector: 0
   rotVector: 0
   endTime: 0
+  elapsedTime: 0
 --- !u!114 &114646457596562250
 MonoBehaviour:
   m_ObjectHideFlags: 1

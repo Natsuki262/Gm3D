@@ -13,8 +13,10 @@ public class Enemy : MonoBehaviour
     const int LEFT  = 3;  //左
     const int RIGHT = 4;  //右
 
-    const float MAX = 45.0f;   //最大座標値
-    const float MIN = -45.0f;  //最小座標値
+    const float MAX_X = 86.0f;   //最大座標値(x軸)
+    const float MIN_X = 2.0f;  //最小座標値(x軸)
+    const float MAX_Z = 54.0f;   //最大座標値(z軸)
+    const float MIN_Z = -4.5f;  //最小座標値(z軸)
 
     [SerializeField]GameObject emManager;  //EnemyManager
 
@@ -36,7 +38,7 @@ public class Enemy : MonoBehaviour
     int vectorSelect;               //方向転換時の確立操作用変数
 
     [SerializeField]float endTime; //カウント終了時間
-    float elapsedTime;             //カウント経過時間
+    [SerializeField]float elapsedTime;             //カウント経過時間
 
 	// Use this for initialization
 	void Start ()
@@ -55,7 +57,7 @@ public class Enemy : MonoBehaviour
         bulletFlg = true;
         hitFlg = false;
         
-        endTime = Random.Range(5.0f, 15.0f);
+        endTime = Random.Range(3.0f, 15.0f);
         elapsedTime = 0.0f;
 	}
 	
@@ -77,7 +79,7 @@ public class Enemy : MonoBehaviour
         if (elapsedTime >= endTime)
         {
             EnemyVectorChenge();
-            EnemyRotation();
+            EnemyRotation();            
         } 
            	
 	}
@@ -110,7 +112,7 @@ public class Enemy : MonoBehaviour
                 break;
         }
 
-        rb.position = new Vector3(Mathf.Clamp(position.x, MIN, MAX), 0, Mathf.Clamp(position.z, MIN, MAX));
+        rb.position = new Vector3(Mathf.Clamp(position.x, MIN_X, MAX_X), 0, Mathf.Clamp(position.z, MIN_Z, MAX_Z));
     }
 
 
@@ -223,8 +225,8 @@ public class Enemy : MonoBehaviour
         vector = rotVector;
         rotVector = 0;
         bulletFlg = true;
-        
-        endTime = Random.Range(5.0f, 15.0f);
+
+        endTime = Random.Range(3.0f, 15.0f);
         elapsedTime = 0.0f;
     }
 
