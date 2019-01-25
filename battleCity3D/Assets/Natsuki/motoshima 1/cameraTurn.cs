@@ -15,7 +15,7 @@ public class cameraTurn: MonoBehaviour {
     // マウス座標を格納する変数
     private Vector2 lastMousePosition;
     // カメラの角度を格納する変数（初期値に0,0を代入）
-    private Vector2 newAngle = new Vector2(0, 0);
+    private Vector2 newAngle = new Vector2(-90, 0);
 
     void Start()
     {
@@ -26,13 +26,13 @@ public class cameraTurn: MonoBehaviour {
     void Update()
     {
         CameraMove();
-        if (newAngle.x > 1.4f)
+        if (newAngle.x > -90f)
         {
-            newAngle.x = 1.4f;
+            newAngle.x = -90f;
         }
-        if (newAngle.x < -10f)
+        if (newAngle.x < -100f)
         {
-            newAngle.x = -10f;
+            newAngle.x = -100f;
         }
     }
     void CameraMove()

@@ -8,8 +8,9 @@ using UnityEngine.UI;
 
 public class EnemyManager : MonoBehaviour
 {
-    const int MAX_ENEMY = 10;       //フィールド上に出現する敵の最大数
-    const float NEXT_TIME = 3.0f;  //敵の出現時間間隔
+    const int MAX_ENEMY = 6;       //フィールド上に出現する敵の最大数
+    const int ALL_ENEMY = 20;      //敵の総数
+    const float NEXT_TIME = 5.0f;  //敵の出現時間間隔
 
     [SerializeField]
     GameObject[] entryPos = new GameObject[3];  //出現位置の格納配列
@@ -19,6 +20,7 @@ public class EnemyManager : MonoBehaviour
 
     int posSelect;         //出現位置選択用（左端から0番、1番・・・）
     public int nowEntry;   //現在出現している敵の数
+    public int remEnemy;   //敵の残数
 
     [SerializeField]
     float elapsedTime;    //経過時間測定用変数
@@ -27,8 +29,9 @@ public class EnemyManager : MonoBehaviour
 	// Use this for initialization
 	void Start ()
     {
-        nowEntry = 0;
         posSelect = 0;
+        nowEntry = 0;
+        remEnemy = ALL_ENEMY;
         elapsedTime = 0.0f;
 	}
 	

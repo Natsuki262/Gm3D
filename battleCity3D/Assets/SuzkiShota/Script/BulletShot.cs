@@ -8,9 +8,14 @@ using UnityEngine;
 public class BulletShot : MonoBehaviour
 {
     public GameObject eBullet; //発射する弾
-    public GameObject tank;    //戦車の向き
+    public GameObject tank;    //戦車オブジェクト
+
+    [SerializeField]
+    GameObject turret;  //砲台の向き
 
     Enemy enemyScript;
+
+    Quaternion turretRot;
 
     float endTime;      //カウント終了時間
     float elapsedTime;  //カウント経過時間
@@ -30,7 +35,8 @@ public class BulletShot : MonoBehaviour
 
         if (elapsedTime >= endTime && enemyScript.bulletFlg == true)
         {
-            Instantiate(eBullet, transform.position, tank.transform.rotation);
+            turretRot = Quaternion.Euler(new Vector3(0, transform.rotation.y, transform.rotation.z));
+            Instantiate(eBullet, transform.position, turretRot);
 
             elapsedTime = 0.0f;
         }

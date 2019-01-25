@@ -13,10 +13,14 @@ public class Enemy : MonoBehaviour
     const int LEFT  = 3;  //左
     const int RIGHT = 4;  //右
 
-    const float MAX_X = 86.0f;   //最大座標値(x軸)
-    const float MIN_X = 2.0f;  //最小座標値(x軸)
+    const float MAX_X = 86.5f;   //最大座標値(x軸)
+    const float MIN_X = 0.05f;  //最小座標値(x軸)
     const float MAX_Z = 54.0f;   //最大座標値(z軸)
-    const float MIN_Z = -4.5f;  //最小座標値(z軸)
+    const float MIN_Z = -6.0f;  //最小座標値(z軸)
+
+    const int HP_MAX = 2;  //体力(最大値)
+
+    int hp; //体力
 
     [SerializeField]GameObject emManager;  //EnemyManager
 
@@ -44,6 +48,7 @@ public class Enemy : MonoBehaviour
 	void Start ()
     {
         emManager = GameObject.Find("EnemyManager");
+        symbol = GameObject.Find("symbol");
 
         symbolPos = symbol.transform.position;
 
@@ -59,6 +64,8 @@ public class Enemy : MonoBehaviour
         
         endTime = Random.Range(3.0f, 15.0f);
         elapsedTime = 0.0f;
+
+        hp = HP_MAX;
 	}
 	
 	// Update is called once per frame
@@ -113,6 +120,7 @@ public class Enemy : MonoBehaviour
         }
 
         rb.position = new Vector3(Mathf.Clamp(position.x, MIN_X, MAX_X), 0, Mathf.Clamp(position.z, MIN_Z, MAX_Z));
+        //rb.position = position;
     }
 
 
@@ -233,26 +241,37 @@ public class Enemy : MonoBehaviour
     //------------------------
     // 衝突判定
     //------------------------
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision collision)
     {
         //壁または敵戦車同士が当たったら方向転換
-        if (other.gameObject.tag == "box" || other.gameObject.tag == "Enemy")
+        if (collision.gameObject.tag == "box" || collision.gameObject.tag == "Enemy")
         {
             if (hitFlg == false)
             {
                 hitFlg = true;
                 elapsedTime = endTime;
             }
-        }
-        
-    }
 
-    private void OnCollisionEnter(Collision collision)
-    {
+        }
         //プレイヤーの弾に当たった時、自身を消去する
-        if (collision.gameObject.tag == "P_Bullet")
+        if (collision.gameObject.tag == "BulletFast")
+        {
+            if (hp > 0)
+            {
+                hp--;
+                Debug.Log("HIT!");
+            }
+            else if (hp <= 0)
+            {
+                emManager.GetComponent<EnemyManager>().nowEntry--;
+                Destroy(gameObject);
+            }
+
+        }
+        else if(collision.gameObject.tag == "BulletSlow")
         {
             emManager.GetComponent<EnemyManager>().nowEntry--;
+            emManager.GetComponent<EnemyManager>().remEnemy--;
             Destroy(gameObject);
         }
     }

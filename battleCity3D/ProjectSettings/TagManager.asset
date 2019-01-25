@@ -9,6 +9,8 @@ TagManager:
   - Enemy
   - E_Bullet
   - P_Bullet
+  - BulletFast
+  - BulletSlow
   layers:
   - Default
   - TransparentFX

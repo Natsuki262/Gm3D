@@ -13,6 +13,10 @@ public class PlayerMove : MonoBehaviour
     private float playerSpeed;
     private float playerMoveAround;
     private float playerTurn;
+
+    [SerializeField]
+    GameObject hpBar;
+
     // Use this for initialization
     void Start ()
     {
@@ -50,7 +54,9 @@ public class PlayerMove : MonoBehaviour
     {
         if(collision.gameObject.tag=="E_Bullet")
         {
-            Debug.Log("<color=red>EnemybulletHIT</color>");
+            Debug.Log("<color=blue>EnemybulletHIT</color>");
+
+            hpBar.GetComponent<HPSanpl>().dFlg = true;
         }
     }
 
